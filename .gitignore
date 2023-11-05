@@ -1,2 +1,8 @@
 .DS_Store
 .env
+
+data/shapefiles
+data/rawjson
+data/vicmap-foi
+
+__pycache__
