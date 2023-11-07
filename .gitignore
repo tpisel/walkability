@@ -2,7 +2,9 @@
 .env
 
 data/shapefiles
-data/rawjson
+data/rawjson*
 data/vicmap-foi
+data/census
 
 __pycache__
+cache/
