@@ -5,6 +5,7 @@ data/shapefiles
 data/rawjson*
 data/vicmap-foi
 data/census
+data/final
 
 __pycache__
 cache/
