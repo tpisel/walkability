@@ -5,7 +5,13 @@ data/shapefiles
 data/rawjson*
 data/vicmap-foi
 data/census
-data/final
+data/final/*json
+data/final/final_nodes.feather
+
 
 __pycache__
 cache/
+
+*.pptx
+
+*.zip
