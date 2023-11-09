@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Walkability Map Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <select id="amenityType">
+        {% for amenity in amenity_type %}
+        <option value="{{ amenity }}">{{ amenity }}</option>
+        {% endfor %}
+    </select>
+    <select id="statType">
+        {% for stat in stat_type %}
+        <option value="{{ stat }}">{{ stat }}</option>
+        {% endfor %}
+    </select>
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([-37.8136, 144.9631], 13); // Centered at Melbourne
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            id: 'mapbox/dark-v10',
+            tileSize: 512,
+            zoomOffset: -1
+        }).addTo(map);
+
+        function updateMap(amenity, stat) {
+            fetch(`/data/${amenity}/${stat}`).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        var value = feature.properties[`${amenity} - ${stat}`];
+                        var color = getColor(value); // TODO
+                        return { color: color, weight: 2 };
+                    }
+                }).addTo(map);
+            });
+        }
+
+        document.getElementById('amenityType').addEventListener('change', function(e) {
+            updateMap(e.target.value, document.getElementById('statType').value);
+        });
+
+        document.getElementById('statType').addEventListener('change', function(e) {
+            updateMap(document.getElementById('amenityType').value, e.target.value);
+        });
+
+        updateMap('restaurant', 'within 2km'); // Initial map view
+
+        // Add getColor function 
+    </script>
+</body>
+</html>
